@@ -1,19 +1,14 @@
-function [ ] = makeDatasetSim( magnitude, savename )
+function [ ] = makeDatasetSim( magnitude, savename, plots )
 
 % inputs:
 %   - magnitude ( __*pi radians of RMS wavefront )
 %   - string savename
-
+%   - plots (1 for on, 0 for off)
 
 % Gautam Gunjala
 % UC Berkeley Computational Imaging Lab
 % 02/2020
 
-%% Setup
-
-% Show plots
-plots       = false;
-plots       = true;
 
 %% Set up experiment parameters ===========================================
 

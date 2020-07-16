@@ -22,7 +22,6 @@ function [A,A_plus,A_minus] = getPolyTransPeriodogram( maxDeg, U, V, T )
         end
     end
     
-%     A = T*A*inv(T);
     A = T\A*T;
     if nargout > 1
         A_plus = T\A_plus*T;
