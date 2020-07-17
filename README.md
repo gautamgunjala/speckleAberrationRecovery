@@ -20,7 +20,7 @@ This repository has four main folders:
 ## Examples
 
 ## References
-The main concept of this paper is based on preliminary research described in the research paper "[Optical transfer function characterization using a weak diffuser](doi.org/10.1117/12.2213271)" (Gunjala, 2016f) and proof-of-concept experimentation described in the research paper "[Aberration recovery by imaging a weak diffuser](https://doi.org/10.1364/OE.26.021054)".
+The main concept of this paper is based on preliminary research described in the research paper "[Optical transfer function characterization using a weak diffuser](doi.org/10.1117/12.2213271)" (Gunjala, 2016) and proof-of-concept experimentation described in the research paper "[Aberration recovery by imaging a weak diffuser](https://doi.org/10.1364/OE.26.021054)" (Gunjala, 2018).
 
 
 _Gautam Gunjala and Antoine Wojdyla, July 2020_
