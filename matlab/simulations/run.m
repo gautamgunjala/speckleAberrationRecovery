@@ -37,7 +37,7 @@ allCosts    = NaN(N_reps,N_ds);
 
 % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 % Set newData to true to create new datasets and/or replace existing ones
-newData     = false; 
+newData     = true; 
 % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 if(newData)   
