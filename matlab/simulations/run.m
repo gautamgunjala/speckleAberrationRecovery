@@ -10,8 +10,13 @@
 %
 %
 
-addpath('..\utils\')
-addpath('.\code\')
+fs          = filesep;
+parentDir   = pwd;
+seps        = strfind(parentDir, fs);
+rootDir     = parentDir(1:seps(end-1));
+dataDir     = [parentDir fs 'simData' fs];
+outDir      = [parentDir fs 'results' fs];
+addpath([rootDir 'matlab' fs 'utils' fs]);
 
 
 %% Simulation parameters
@@ -35,15 +40,26 @@ allCosts    = NaN(N_reps,N_ds);
 newData     = false; 
 % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-if(newData)
+if(newData)   
+    fprintf('Creating datasets in simData ...')
+    
     dirName     = ['mag_1e' num2str(pow)];
-    rmdir(['.\data\', dirName], 's');
-    mkdir('.\data\', dirName);
+    
+    try
+        rmdir([dataDir, dirName], 's');
+    catch err
+    end
+        
+    mkdir(dataDir, dirName);
 
     for ii = 1 : N_ds
         makeDatasetSim( 10^pow, ...
-                ['.\data\', dirName, '\dataset', num2str(ii), '.mat'], 0);
+                [dataDir dirName fs 'dataset' num2str(ii) '.mat'], 0);
     end
+    
+    fprintf(' done.\n')
+else
+    fprintf('Using pre-existing datasets in simData.\n')
 end
    
    
@@ -55,7 +71,7 @@ for ii = 1 : N_ds
     fprintf('Processing dataset %i of %i ... \n', ii, N_ds)
 
     ds_name     = ['dataset' num2str(ii) '.mat'];
-    ds_path     = ['.\data\mag_1e' num2str(pow) '\' ds_name];
+    ds_path     = [dataDir 'mag_1e' num2str(pow) fs ds_name];
     
     if ii == 1
         % Precompute terms that will be re-used
@@ -82,7 +98,7 @@ for ii = 1 : N_ds
     fprintf('Minimum relative error was %.2f percent \n', min(errs))
     fprintf('Relative error of output was %.2f percent \n', argminErr)
     
-    savename        = ['.\results\mag_1e' num2str(pow) '_out.mat'];
+    savename        = [outDir 'mag_1e' num2str(pow) '_out.mat'];
     save(savename,'allErrs','allCosts','N_ds','N_reps','N_iter','phpx')
     
 end

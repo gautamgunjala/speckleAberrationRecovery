@@ -1,4 +1,4 @@
-function [ f ] = diffCharOpt( x, c, fx2fy2, FP )
+function [ f ] = diffCharOpt( x, c, fx2fy2, FP, pupil )
 % optimization function to recover defocus along with diffuser statistical
 % properties
 % x is a vector of coefficients
@@ -9,7 +9,7 @@ function [ f ] = diffCharOpt( x, c, fx2fy2, FP )
 
 s1 = exp((c(2))*(x(3))^2*fx2fy2);
 s2 = sin(c(3)*x(2)*fx2fy2);
-s = ((c(1)*(x(1)/x(3)).* s1 .* s2 ).^2 - FP).^2;
+s = pupil .* ((c(1)*(x(1)/x(3)).* s1 .* s2 ).^2 - FP).^2;
 
 f = sum( s(:) );
 

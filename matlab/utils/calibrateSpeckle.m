@@ -1,10 +1,7 @@
-function [ sigmaRayl, window, def ] = calibrateSpeckle( calImgFT, imgPar, GUESS, varargin )
+function [ sigmaRayl, window, def ] = calibrateSpeckle( calImgFT, imgPar, GUESS, plots )
 
-if nargin == 3
-    plots = 1;
-else
-    plots = 0;
-end
+
+
 
 const       = 1e6;
 

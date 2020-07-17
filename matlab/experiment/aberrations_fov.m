@@ -46,7 +46,7 @@ calDef      = -2.40859;
 xroi        = 906:1161;
 yroi        = 679:934;
 
-center      = floor(nx/2)+1;
+center      = floor(param.nx/2)+1;
 radP        = 1 ./ ndfx;
 crop1       = center - ceil(radP) - 10;
 crop2       = center + ceil(radP) + 9;
@@ -59,7 +59,7 @@ imSegFT     = rmvAxes(abs(fft2c(imSeg))) .*pupil;
 imSegFT_c   = imSegFT(crop1:crop2, crop1:crop2);
 
 [sigmaRayl, window, ~]  ...
-            = calibrateSpeckle(imSegFT_c, param,[10000; calDef; 2]);
+            = calibrateSpeckle(imSegFT_c, param,[10000; calDef; 2], 0);
 
         
 %% Zernike Polynomial basis

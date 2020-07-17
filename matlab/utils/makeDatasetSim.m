@@ -35,7 +35,8 @@ Pupil       = ( Fx.^2 + Fy.^2 < fc^2 );
 
 % Normalize freq coordinates for numerical stability (Fx = fc * nFx)
 % Pupil occupies a radius of 1 in (fx,fy)-space
-[nFx,nFy]   = meshgrid( fx./fc, fx./fc );
+nfx         = fx ./fc;
+[nFx,nFy]   = meshgrid( nfx, nfx );
 
 %% Create weak phase diffuser object ======================================
 
@@ -58,20 +59,12 @@ E0u     = fft2c( E0x );
 
 %% Characterize diffuser (Gaussian envelope) ==============================
 
-% Acquire ONE measurement; optical system = free space propagation
+% Acquire ONE defocused measurement
 z       = 1e-6;
-[E1x,H] = propagate(E0x,lambda_m,z,ps_m);
+Ei      = ifft2c(E0u .*Pupil);
+[E1x,H] = propagate(Ei, lambda_m, z, ps_m);
 H       = fftshift(H);
 Ix      = abs(E1x).^2;
-
-% % Add photon noise to defocused measurement
-% N_ph    = (10^3.8)*nx*nx;
-% tmp     = sum(Ix(:));
-% Ix      = Ix./tmp;
-% I_ph    = Ix*N_ph;
-% I_n     = (I_ph + sqrt(I_ph).*randn(size(I_ph)));
-% Ix      = I_n / N_ph * tmp;
-
 
 % Compute and process periodogram of intensity measurement 
 P       = rmvDC(abs(fft2c(Ix)));
@@ -86,7 +79,7 @@ c       = [ nx^2*ps_m*sqrt(2*pi), ...
 fxp     = fx((nx/2+1):end)./fc;
 
 % Set up optimization cost function
-fun     = @(x) diffCharOpt( x, c, fx2fy2, FP );
+fun     = @(x) diffCharOpt( x, c, fx2fy2, FP, Pupil );
 GUESS   = [1000;1;1];
     
 % Run unconstrained quasi-newton algorithm
@@ -102,27 +95,17 @@ tmp     = c(1) * (sol(1)/sol(3)).*exp(c(2)*(sol(3))^2*fx2fy2);
 
 if(plots)
     
-    cmap = 'parula';
-    fontname = 'Helvetica';
-    set(0,'defaultaxesfontname',fontname);
-    set(0,'defaulttextfontname',fontname);
-
-    fontsize = 16;
-    set(0,'defaultaxesfontsize',fontsize-2);
-    set(0,'defaulttextfontsize',fontsize);
-
-    h = figure; 
-    plot( fxp.*fc*1e-6,sqrt(iavg),'-k','LineWidth',6 )
+    figure; 
+    plot( fxp, sqrt(iavg),'-k','LineWidth',6 )
     hold on
 
-    plot( fxp.*fc*1e-6,abs(tmp((nx/2+1),(nx/2+1):end) .* ... 
+    plot( fxp, abs(tmp((nx/2+1),(nx/2+1):end) .* ... 
           sqrt(sin(c(3)*sol(2)*(fxp.^2)).^2)) ,'-r','LineWidth',2 )
-    plot( fxp.*fc*1e-6,abs(tmp((nx/2+1),(nx/2+1):end)),'-b','LineWidth',2 )
+    plot( fxp, abs(tmp((nx/2+1),(nx/2+1):end)),'-b','LineWidth',2 )
     hold off
-    title( '\textbf{Simulated window estimation}', ...
-           'interpreter','latex','fontsize',20 )
-    ylabel( '$|\hat{I_{\O}}(u)|$','interpreter','latex' ); 
-    xlabel( '$u$ ($\mu$m$^{-1}$)','interpreter','latex' );
+    title('Simultaneous estimation of window and defocus (chirp')
+    ylabel('Magnitude'); 
+    xlabel('Normalized frequency');
 
     legend( 'Measurement radial average', ...
             'Fitted model (damped defocus kernel)', ...
@@ -145,24 +128,30 @@ if(plots)
 
     % Compare diffuser characterization with true diffuser properties
     figure;
-    subplot(1,2,1), imagesc(fx,fx,gwin); colorbar
-    title(sprintf('True spectral window, sigma = %d, scale = %d',sigma,scale));
-    ylabel('f_y'); xlabel('f_x');
-    subplot(1,2,2), imagesc(fx,fx,gwinEst); colorbar
-    title(sprintf('Est. spectral window, sigma = %d, scale = %d',sigmaEst,scaleEst));
-    ylabel('f_y'); xlabel('f_x');
+    subplot(1,2,1), imagesc(nfx, nfx, gwin); colorbar
+    title(sprintf('True spectral window, sigma = %d, scale = %d', ...
+                                                    sigma, scale));
+    xlabel('Normalized frequency');
+    
+    subplot(1,2,2), imagesc(nfx, nfx, gwinEst); colorbar
+    title(sprintf('Est. spectral window, sigma = %d, scale = %d', ...
+                                                    sigmaEst, scaleEst));
+    xlabel('Normalized frequency');
 
     % Periodogram estimation and comparisons
     figure;
-    subplot(1,3,1), imagesc(fx,fx,P); colorbar
+    
+    subplot(1,3,1), imagesc(nfx, nfx, P); colorbar
     title('Measured periodogram');
-    ylabel('f_y'); xlabel('f_x');
-    subplot(1,3,2), imagesc(fx,fx,PAest); colorbar
+    xlabel('Normalized frequency');
+    
+    subplot(1,3,2), imagesc(nfx, nfx, PAest); colorbar
     title('Est. periodogram using analytic components');
-    ylabel('f_y'); xlabel('f_x');
-    subplot(1,3,3), imagesc(fx,fx,Pest); colorbar
+    xlabel('Normalized frequency');
+    
+    subplot(1,3,3), imagesc(nfx, nfx, Pest); colorbar
     title('Est. periodogram using estimated components');
-    ylabel('f_y'); xlabel('f_x');
+    xlabel('Normalized frequency');
     
 end
 
@@ -174,7 +163,8 @@ rr          = r(use(:));
 K           = length(rr);
 sigmaRayl   = sqrt( sum(rr.^2/(2*K)) )*exp(1)*sqrt(K/(K-1))*((K-1)/K)^K;
 
-[N,X]       = hist(rr,200);
+[N,E]       = histcounts(rr,200);
+X           = 0.5*(E(1:end-1) + E(2:end));
 if(~plots)
     
     close
@@ -187,25 +177,15 @@ raylMean    = sigmaRayl*sqrt(pi/2);
 
 if(plots)
     
-    fontname = 'Helvetica';
-    set(0,'defaultaxesfontname',fontname);
-    set(0,'defaulttextfontname',fontname);
-
-    fontsize = 16;
-    set(0,'defaultaxesfontsize',fontsize-2);
-    set(0,'defaulttextfontsize',fontsize);
-
-    h = figure; 
-    set(h,'Position',[100,100,800,275])
-
+    figure; 
     bar(X,N);
     hold on
-    plot(X,y*sum(N)/sum(y),'r','Linewidth',3);
+    plot(X, y*sum(N)/sum(y), 'r', 'Linewidth', 3);
     hold off
 
-    title('\textbf{Noise distribution estimation}','interpreter','latex','fontsize',20)
-    ylabel('\textbf{Counts}','interpreter','latex'); 
-    xlabel('\boldmath$\eta(u,v)$','interpreter','latex');
+    title('Noise distribution estimation')
+    ylabel('Counts'); 
+    xlabel('Residual noise magnitude');
 
     legend('Residual noise','Estimated PDF')
     grid on
@@ -230,6 +210,7 @@ if(plots)
     
     figure; imagesc(fx,fx,WEF.*Pupil); colorbar
     title('Wavefront error function')
+    xlabel('Residual noise magnitude');
     
 end
 
