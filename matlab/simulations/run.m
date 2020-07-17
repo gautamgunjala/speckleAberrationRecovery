@@ -54,7 +54,7 @@ if(newData)
 
     for ii = 1 : N_ds
         makeDatasetSim( 10^pow, ...
-                [dataDir dirName fs 'dataset' num2str(ii) '.mat'], 0);
+                [dataDir dirName fs 'dataset' num2str(ii) '.mat'], 1);
     end
     
     fprintf(' done.\n')

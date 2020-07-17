@@ -171,7 +171,7 @@ if(~plots)
     
 end
 
-y           = raylpdf(X,sigmaRayl);
+y           = X ./(sigmaRayl^2) .*exp(-X.^2 ./(2*sigmaRayl^2));
 
 raylMean    = sigmaRayl*sqrt(pi/2);
 
