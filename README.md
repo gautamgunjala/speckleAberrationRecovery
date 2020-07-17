@@ -1,8 +1,13 @@
 # Speckle aberration recovery
 
+Note AW 7/16/2020: by popular demand we are improving our scripts and translating them into python. Stay tuned!
+
 
 ## Introduction
-This repository is the open science addition to the research paper "[Extreme ultraviolet microscope characterization using photomask surface roughness](https://www.nature.com/articles/s41598-020-68588-w)" (Gunjala, 2020), where we demonstrate the use of natural roughness to recover the aberration of a imaging system, in that case the SHARP EUV microscope ([sharp.lbl.gov](sharp.lbl.gov).)
+This repository is the open science addition to the research paper "[Extreme ultraviolet microscope characterization using photomask surface roughness](https://www.nature.com/articles/s41598-020-68588-w)" (Gunjala, 2020), where we demonstrate the use of natural roughness to recover the aberration of a imaging system, in that case the SHARP EUV microscope ([sharp.lbl.gov](sharp.lbl.gov))
+
+![alt text](https://raw.githubusercontent.com/gautamgunjala/speckleAberrationRecovery/master/assets/speckle_tf.gif "speckle through focus")
+
 
 ## Content
 This repository has four main folders:
@@ -15,7 +20,10 @@ This repository has four main folders:
 ## Usage
 
 ### MATLAB
+there is a script 
 ### Python
+There is a jupyter notebook.
+you can also run a script.
 
 ## Examples
 

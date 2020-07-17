@@ -1,1 +1,4 @@
 /data/raw/*
+/python/.*
+*.m~
+*.asv
