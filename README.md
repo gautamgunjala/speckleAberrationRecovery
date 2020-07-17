@@ -4,14 +4,11 @@ Note AW 7/16/2020: by popular demand we are improving our scripts and translatin
 
 
 ## Introduction
-<<<<<<< HEAD
+
 This repository is the open science addition to the research paper "[Extreme ultraviolet microscope characterization using photomask surface roughness](https://www.nature.com/articles/s41598-020-68588-w)" (Gunjala, 2020), where we demonstrate the use of natural roughness to recover the aberration of a imaging system, in that case the SHARP EUV microscope ([sharp.lbl.gov](sharp.lbl.gov))
 
 ![alt text](https://raw.githubusercontent.com/gautamgunjala/speckleAberrationRecovery/master/assets/speckle_tf.gif "speckle through focus")
 
-=======
-This repository is the open science addition to the research paper "[Extreme ultraviolet microscope characterization using photomask surface roughness](https://www.nature.com/articles/s41598-020-68588-w)" (Gunjala, 2020), where we demonstrate the use of natural surface roughness to recover the aberrations of a imaging system, in the case of the SHARP EUV microscope ([sharp.lbl.gov](sharp.lbl.gov).)
->>>>>>> origin/master
 
 ## Content
 This repository has four main folders:
