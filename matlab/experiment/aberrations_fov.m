@@ -5,9 +5,13 @@
 % Output is a collection of Zernike coefficient vectors corresponding to
 % every analyzed sub-region of the full-field image
 
-folder      = '.\data\';
-addpath '..\utils\'
-addpath '.\code\'
+fs          = filesep;
+parentDir   = pwd;
+seps        = strfind(parentDir, fs);
+rootDir     = parentDir(1:seps(end-1));
+dataDir     = [rootDir 'data' fs];
+addpath([rootDir 'matlab' fs 'utils' fs]);
+
 
 %% Initialize imaging parameters and coordinate spaces
 
@@ -37,7 +41,7 @@ ndfx            = dfx_mi ./fc;
 %% Speckle parameter calibration
 
 % Load calibration (strongly defocused) image and metadata
-calImg      = double(imread([folder '160405-0006-0001.png']));
+calImg      = double(imread([dataDir 'SHARP-00.png']));
 calDef      = -2.40859;
 xroi        = 906:1161;
 yroi        = 679:934;
