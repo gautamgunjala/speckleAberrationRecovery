@@ -6,7 +6,7 @@
 %
 %               10^pow * pi radians RMS
 %
-% output is the minimum converged cost of 100 initializations 
+% output is the minimum converged cost among 100 initializations 
 %
 %
 
