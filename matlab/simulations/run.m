@@ -1,5 +1,5 @@
 % Gautam Gunjala, Stuart Sherwin
-% 4/14/2020
+% updated 7/17/2020
 % Noise analysis of aberration estimation
 %
 % aberration polynomials defined with magnitude (L2-norm) 
@@ -38,6 +38,9 @@ allCosts    = NaN(N_reps,N_ds);
 % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 % Set newData to true to create new datasets and/or replace existing ones
 newData     = true; 
+
+% Set plots to 1 to verify that datasets are created properly
+plots       = 0;
 % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 if(newData)   
@@ -54,7 +57,7 @@ if(newData)
 
     for ii = 1 : N_ds
         makeDatasetSim( 10^pow, ...
-                [dataDir dirName fs 'dataset' num2str(ii) '.mat'], 1);
+                [dataDir dirName fs 'dataset' num2str(ii) '.mat'], plots);
     end
     
     fprintf(' done.\n')
