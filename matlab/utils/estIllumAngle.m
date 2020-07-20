@@ -172,24 +172,24 @@ for ii=1:numImg
         %1st Derivative
         pd=squeeze(pixD(PDI,:,:)); %Select radius
         mxL=max(pd(:));
-        sL=std2(pd);
+        sL=std(pd(:));
         maxPD(:,:,ii)=(pd>=mxL-0.1.*sL); %Select region around max
 
         %2nd Derivative
         pd2=squeeze(pixD2(PD2I,:,:)); %Select radius
         mxL2=max(pd2(:));
-        sL2=std2(pd2);
+        sL2=std(pd2(:));
         maxPD2(:,:,ii)=(pd2>=mxL2-0.25.*sL2); %Select region around max
     else
         %Same as above, but ignoring center distances where cross origin
         pd=squeeze(pixD(PDI,:,:));
-        sL=std2(pd);
+        sL=std(pd(:));
         pd(:,~validD)=0;
         mxL=max(pd(:));  
         maxPD(:,:,ii)=(pd>=mxL-0.1.*sL);
 
         pd2=squeeze(pixD2(PD2I,:,:));
-        sL2=std2(pd2);
+        sL2=std(pd2(:));
         pd2(:,~validD)=0;
         mxL2=max(pd2(:));
         maxPD2(:,:,ii)=(pd2>=mxL2-0.25.*sL2);
