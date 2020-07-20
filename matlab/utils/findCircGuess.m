@@ -1,4 +1,4 @@
-function [ Hpix, Vpix, minCost ] = findCirc2( F, radP )
+function [ Hpix, Vpix, minCost ] = findCircGuess( F, radP )
 
 F       = F ./ max(F(:));
 spc     = linspace(-radP,radP,50);
@@ -27,8 +27,6 @@ y           = (1:sy) - ycen;
 
 mask        = double(and( (X - Hpix).^2 + (Y - Vpix).^2 >= radP.^2 , ...
                           (-X - Hpix).^2 + (-Y - Vpix).^2 >= radP.^2 ));
-                      
-%mask        = mask - (X.^2 + Y.^2 <= (radP/4).^2);
 
 tmp         = mask.*F;
 cost        = var(sqrt(tmp(:)));

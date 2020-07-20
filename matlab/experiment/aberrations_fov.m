@@ -123,7 +123,11 @@ for p = 1 : length(Ys)
         Ve      = zeros(size(img_crop));
 
         for ii = 1 : size(spectra,1)
-            [Hp,Vp]     = findCirc2( spectra{ii}, radP );
+            
+            % Obtain coarse estimate
+            [Hp,Vp]     = findCircGuess( spectra{ii}, radP );
+            
+            % Iterative refinement
             freqXYout   = (estIllumAngle(spectra{ii}, radP, ...
                            [center+Hp,center+Vp], 0) - center)*ndfx;
             Ue(ii)      = freqXYout(1);
