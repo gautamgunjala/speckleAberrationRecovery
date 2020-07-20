@@ -26,7 +26,7 @@ for k = 1 : nimg
     diffs   = currM - En*reshape(abs(sin(Ac)),[d,d]);
     tmp     = currD.*( (diffs.^2) ./ currW );
     tmp     = tmp(:);
-    cost    = cost + tmp(~isnan(tmp));
+    cost    = cost + sum(tmp(~isnan(tmp)));
 
     if( nargout > 1 )    
     % update grad -----------------------------------------------------
