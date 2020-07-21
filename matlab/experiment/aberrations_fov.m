@@ -268,7 +268,7 @@ for p = 1 : length(Ys)
         FOV_ABERR(p,q,:)    = z;
         save([outDir 'aberrations_full_FOV_angleCorrected_512.mat'], ...
                 'FOV_ABERR','rawSpecAll','spectraAll', ...
-                'raylMeanAll','pupDomAll','fmA_All')
+                'raylMeanAll','pupDomAll','fmA_all')
 
         end   
     end
